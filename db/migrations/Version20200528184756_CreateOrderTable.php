@@ -51,6 +51,10 @@ final class Version20200528184756_CreateOrderTable extends AbstractMigration
             'notnull' => true,
             'length' => 255,
         ]);
+        $table->addColumn('email', Types::STRING, [
+            'notnull' => false,
+            'length' => 255,
+        ]);
         $table->addColumn('total_price', Types::FLOAT, [
             'notnull' => true,
         ]);

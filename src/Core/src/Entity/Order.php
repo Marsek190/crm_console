@@ -57,6 +57,10 @@ class Order extends AbstractRootEntity
      * @ORM\Column(name="order_type", type="string")
      */
     protected string $orderType;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected ?string $email = null;
 
     /**
      * @return int
