@@ -111,6 +111,9 @@
     "retailcrm/api-client-php": {
         "version": "v5.5.2"
     },
+    "sebastian/money": {
+        "version": "v1.6.2"
+    },
     "symfony/cache": {
         "version": "v5.0.8"
     },

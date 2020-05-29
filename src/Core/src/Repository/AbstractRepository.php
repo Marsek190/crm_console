@@ -34,4 +34,6 @@ abstract class AbstractRepository
     }
 
     protected abstract function getObjectPrototype(): string;
+
+    protected abstract function getTableName(): string;
 }

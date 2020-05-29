@@ -11,19 +11,31 @@ class DiscountEvaluator
 {
     protected AbstractEmailChecker $emailChecker;
 
+    protected Order $order;
+
     public function __construct(AbstractEmailChecker $emailChecker)
     {
         $this->emailChecker = $emailChecker;
     }
 
-    public function getDiscount(Order $order): float
+    /**
+     * @param Order $order
+     * @return DiscountEvaluator
+     */
+    public function setOrder(Order $order): DiscountEvaluator
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+    public function getPriceWithDiscount(): float
     {
         $discountStrategies = [];
-        if ($this->isFavoriteEmail($order->getEmail())) {
+        if ($this->isFavoriteEmail($this->order->getEmail())) {
             $discountStrategies[] = new FavoriteEmailStrategy();
         }
 
-        return (new Context($discountStrategies))->execute();
+        return (new Context($discountStrategies))->setOrder($this->order)->execute();
     }
 
     protected function isFavoriteEmail(?string $email): bool

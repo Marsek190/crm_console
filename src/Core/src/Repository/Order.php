@@ -30,7 +30,7 @@ class Order extends AbstractRepository
     {
         $qb = $this->connection->createQueryBuilder()
             ->select('o.id')
-            ->from('_order', 'o')
+            ->from($this->getTableName(), 'o')
             ->andWhere('o.id = :id')
             ->setParameter('id', $id, Type::INTEGER);
 
@@ -43,5 +43,10 @@ class Order extends AbstractRepository
     protected function getObjectPrototype(): string
     {
         return \Core\Entity\Order::class;
+    }
+
+    protected function getTableName(): string
+    {
+        return '_order';
     }
 }

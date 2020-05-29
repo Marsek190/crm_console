@@ -6,14 +6,18 @@ namespace Core\Service;
 
 use Core\Exception\OrderExistsError;
 use Core\Exception\WrongOrderStoreException;
+use Core\Service\Discount\DiscountEvaluator;
 
 class Order
 {
     protected \Core\Repository\Order $order;
 
-    public function __construct(\Core\Repository\Order $order)
+    protected DiscountEvaluator $evaluator;
+
+    public function __construct(\Core\Repository\Order $order, DiscountEvaluator $evaluator)
     {
         $this->order = $order;
+        $this->evaluator = $evaluator;
     }
 
     /**
@@ -27,7 +31,8 @@ class Order
             throw new OrderExistsError();
         }
 
-        $orderDto = $this->order->save($order);
+        $priceWithDiscount = $this->evaluator->setOrder($order)->getPriceWithDiscount();
+        $orderDto = $this->order->save($order->setPriceWithDiscount($priceWithDiscount));
         if (is_null($orderDto)) {
             throw new WrongOrderStoreException();
         }
