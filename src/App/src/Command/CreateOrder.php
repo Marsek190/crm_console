@@ -79,6 +79,7 @@ class CreateOrder extends Command
             ->setCreatedAt(new \DateTime($orderUnprepared['createdAt']))
             ->setTotalPrice($orderUnprepared['totalSumm'])
             ->setPriceWithDiscount($orderUnprepared['totalSumm']);
+            //->setEmail('oliver-heldens@music.nd');
 
         if ($orderUnprepared['markDatetime']) {
             $order->setMarkDatetime(new \DateTime($orderUnprepared['markDatetime']));

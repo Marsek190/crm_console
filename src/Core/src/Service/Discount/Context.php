@@ -10,7 +10,7 @@ use Core\Entity\Order;
 use SebastianBergmann\Money\Currency;
 use SebastianBergmann\Money\Money;
 
-class Context
+class Context implements CurrencyIsoConverterInterface
 {
     protected array $strategies;
 
@@ -40,9 +40,11 @@ class Context
                 ->setDiscountValue(0);
         }
 
+        $currencyConverter = $this->convert();
+
         $amountDiscount = 0;
-        $c = new Currency($this->order->getCountryIso());
-        $m = new Money($this->order->getTotalPrice(), $c);
+        $c = new Currency($currencyConverter[$this->order->getCountryIso()]);
+        $m = Money::fromString((string) $this->order->getTotalPrice(), $c);
 
         /**
          * @var $strategy DiscountStrategyInterface|CurrencyInterface
@@ -52,7 +54,14 @@ class Context
         }
 
         return $amountPriceToDiscountDto
-            ->setPriceWithDiscount($m->subtract(new Money($amountDiscount, $c))->getConvertedAmount())
+            ->setPriceWithDiscount($m->subtract(Money::fromString((string) $amountDiscount, $c))->getConvertedAmount())
             ->setDiscountValue($amountDiscount);
+    }
+
+    public function convert(): array
+    {
+        return [
+            'RU' => 'RUB',
+        ];
     }
 }

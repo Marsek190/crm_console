@@ -67,10 +67,9 @@ class Order
      */
     protected function updateAmountPriceInOrder(\Core\Entity\Order $order): void
     {
-        try {
-            $orderToArray = $order->toArray();
-            $this->client->request->ordersEdit($orderToArray, static::FIND_BY_ID_TYPE);
-        } catch (\Exception $e) {
+        $orderToArray = $order->toArray();
+        $response = $this->client->request->ordersEdit($orderToArray, static::FIND_BY_ID_TYPE);
+        if (! $response->isSuccessful()) {
             throw new WrongOrderUpdateException();
         }
     }

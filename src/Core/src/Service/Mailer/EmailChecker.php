@@ -10,6 +10,6 @@ final class EmailChecker extends AbstractEmailChecker
 
     public function check(): bool
     {
-        return preg_match($this->favoriteEmailRegex, $this->email);
+        return (bool) preg_match($this->favoriteEmailRegex, $this->email);
     }
 }
