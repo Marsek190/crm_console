@@ -10,20 +10,7 @@ abstract class AbstractEmailChecker
 
     protected string $favoriteEmailRegex;
 
-    public function __construct(string $email)
-    {
-        $this->email = $email;
-    }
-
     public abstract function check(): bool;
-
-    /**
-     * @return string
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
 
     /**
      * @param string $email

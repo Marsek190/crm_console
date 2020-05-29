@@ -43,7 +43,7 @@ trait ToArrayTrait
         return $result;
     }
 
-    private function transformPropertyToSnakeCase(string $prop): string
+    protected function transformPropertyToSnakeCase(string $prop): string
     {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $prop));
     }

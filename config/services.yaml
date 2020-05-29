@@ -33,5 +33,13 @@ services:
         class: Core\Repository\Order
         arguments:
             $em: "@doctrine.orm.entity_manager"
+    core.service.email_checker:
+        class: Core\Service\Mailer\EmailChecker
+        arguments: []
+    core.service.evaluator:
+        class: Core\Service\Discount\DiscountEvaluator
+        arguments: ["@core.service.email_checker"]
     Core\Service\Order:
-        arguments: ["@core.repository.order"]
+        arguments:
+            $order: "@core.repository.order"
+            $evaluator: "@core.service.evaluator"
