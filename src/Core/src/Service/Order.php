@@ -55,20 +55,20 @@ class Order
 
         // апдейтим сумму в crm
         if ($amountPriceToDiscountDto->getDiscountValue() > 0) {
-            $this->updateAmountPriceInOrder($orderDto);
+            $this->updateAmountPriceInOrder($order);
         }
 
         return $orderDto;
     }
 
     /**
-     * @param \Core\Entity\DTO\Order $orderDto
+     * @param \Core\Entity\Order $order
      * @throws WrongOrderUpdateException
      */
-    protected function updateAmountPriceInOrder(\Core\Entity\DTO\Order $orderDto): void
+    protected function updateAmountPriceInOrder(\Core\Entity\Order $order): void
     {
         try {
-            $orderToArray = [];
+            $orderToArray = $order->toArray();
             $this->client->request->ordersEdit($orderToArray, static::FIND_BY_ID_TYPE);
         } catch (\Exception $e) {
             throw new WrongOrderUpdateException();
