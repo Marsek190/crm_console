@@ -7,6 +7,7 @@ namespace Core\Service;
 use Core\Exception\OrderExistsError;
 use Core\Exception\WrongOrderStoreException;
 use Core\Service\Discount\DiscountEvaluator;
+use RetailCrm\ApiClient;
 
 class Order
 {
@@ -14,10 +15,13 @@ class Order
 
     protected DiscountEvaluator $evaluator;
 
-    public function __construct(\Core\Repository\Order $order, DiscountEvaluator $evaluator)
+    protected ApiClient $client;
+
+    public function __construct(\Core\Repository\Order $order, DiscountEvaluator $evaluator, ApiClient $client)
     {
         $this->order = $order;
         $this->evaluator = $evaluator;
+        $this->client = $client;
     }
 
     /**
@@ -36,6 +40,9 @@ class Order
         if (is_null($orderDto)) {
             throw new WrongOrderStoreException();
         }
+
+        // апдейтим сумму в crm
+
         return $orderDto;
     }
 }

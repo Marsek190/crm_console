@@ -8,10 +8,7 @@ class Order
 {
     protected int $id;
 
-    public function __construct(int $id)
-    {
-        $this->id = $id;
-    }
+    protected float $priceWithDiscount;
 
     /**
      * @return int
@@ -28,6 +25,24 @@ class Order
     public function setId(int $id): Order
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPriceWithDiscount(): float
+    {
+        return $this->priceWithDiscount;
+    }
+
+    /**
+     * @param float $priceWithDiscount
+     * @return Order
+     */
+    public function setPriceWithDiscount(float $priceWithDiscount): Order
+    {
+        $this->priceWithDiscount = $priceWithDiscount;
         return $this;
     }
 }

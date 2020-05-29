@@ -19,7 +19,9 @@ class Order extends AbstractRepository
             $this->em->flush();
             $this->em->commit();
 
-            return new \Core\Entity\DTO\Order($order->getId());
+            return (new \Core\Entity\DTO\Order())
+                ->setId($order->getId())
+                ->setPriceWithDiscount($order->getPriceWithDiscount());
         } catch (ORMException $e) {
             $this->em->rollback();
             return null;
