@@ -70,7 +70,7 @@ class Order
         $orderToArray = $order->toArray();
         $response = $this->client->request->ordersEdit($orderToArray, static::FIND_BY_ID_TYPE);
         if (! $response->isSuccessful()) {
-            throw new WrongOrderUpdateException();
+            throw new WrongOrderUpdateException($response->getResponseBody());
         }
     }
 }
