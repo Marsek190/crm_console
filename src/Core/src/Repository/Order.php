@@ -11,7 +11,7 @@ use Doctrine\ORM\ORMException;
 
 class Order extends AbstractRepository
 {
-    public function save(\Core\Entity\Order $order): ?\Core\Entity\DTO\Order
+    public function save(\Core\Entity\Order $order): bool
     {
         $this->em->beginTransaction();
         try {
@@ -19,12 +19,10 @@ class Order extends AbstractRepository
             $this->em->flush();
             $this->em->commit();
 
-            return (new \Core\Entity\DTO\Order())
-                ->setId($order->getId())
-                ->setPriceWithDiscount($order->getPriceWithDiscount());
+            return true;
         } catch (ORMException $e) {
             $this->em->rollback();
-            return null;
+            return false;
         }
     }
 

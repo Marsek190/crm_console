@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Core\Service\Discount;
 
 
+use Core\Entity\DTO\AmountPriceToDiscount;
 use Core\Entity\Order;
 use Core\Service\Mailer\AbstractEmailChecker;
 
@@ -28,7 +29,7 @@ class DiscountEvaluator
         return $this;
     }
 
-    public function getPriceWithDiscount(): float
+    public function getAmountPriceToDiscount(): AmountPriceToDiscount
     {
         $discountStrategies = [];
         if ($this->isFavoriteEmail($this->order->getEmail())) {

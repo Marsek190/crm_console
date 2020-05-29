@@ -5,11 +5,12 @@ namespace Core\Service\Discount;
 
 
 
+use Core\Entity\DTO\AmountPriceToDiscount;
 use Core\Entity\Order;
 use SebastianBergmann\Money\Currency;
 use SebastianBergmann\Money\Money;
 
-class Context implements DiscountStrategyInterface
+class Context
 {
     protected array $strategies;
 
@@ -30,8 +31,15 @@ class Context implements DiscountStrategyInterface
         return $this;
     }
 
-    public function execute(): float
+    public function execute(): AmountPriceToDiscount
     {
+        $amountPriceToDiscountDto = new AmountPriceToDiscount();
+        if (empty($this->strategies)) {
+            return $amountPriceToDiscountDto
+                ->setPriceWithDiscount($this->order->getTotalPrice())
+                ->setDiscountValue(0);
+        }
+
         $amountDiscount = 0;
         $c = new Currency($this->order->getCountryIso());
         $m = new Money($this->order->getTotalPrice(), $c);
@@ -43,6 +51,8 @@ class Context implements DiscountStrategyInterface
             $amountDiscount += $strategy->setMoney($m)->execute();
         }
 
-        return $m->subtract(new Money($amountDiscount, $c))->getConvertedAmount();
+        return $amountPriceToDiscountDto
+            ->setPriceWithDiscount($m->subtract(new Money($amountDiscount, $c))->getConvertedAmount())
+            ->setDiscountValue($amountDiscount);
     }
 }

@@ -8,7 +8,7 @@ class Order
 {
     protected int $id;
 
-    protected float $priceWithDiscount;
+    protected AmountPriceToDiscount $amountPriceToDiscount;
 
     /**
      * @return int
@@ -29,20 +29,20 @@ class Order
     }
 
     /**
-     * @return float
+     * @return AmountPriceToDiscount
      */
-    public function getPriceWithDiscount(): float
+    public function getAmountPriceToDiscount(): AmountPriceToDiscount
     {
-        return $this->priceWithDiscount;
+        return $this->amountPriceToDiscount;
     }
 
     /**
-     * @param float $priceWithDiscount
+     * @param AmountPriceToDiscount $amountPriceToDiscount
      * @return Order
      */
-    public function setPriceWithDiscount(float $priceWithDiscount): Order
+    public function setAmountPriceToDiscount(AmountPriceToDiscount $amountPriceToDiscount): Order
     {
-        $this->priceWithDiscount = $priceWithDiscount;
+        $this->amountPriceToDiscount = $amountPriceToDiscount;
         return $this;
     }
 }
