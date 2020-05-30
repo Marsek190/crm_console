@@ -75,7 +75,7 @@ class Order
      * @param string $orderId
      * @throws OrderNotFoundException
      */
-	public function getOrderById(string $orderId): \RetailCrm\Response\ApiResponse 
+	public function getOrderById(string $orderId): \RetailCrm\Response\ApiResponse
 	{
 		$response = $this->client->request->ordersGet($orderId, static::FIND_BY_ID_TYPE);
         if (! $response->isSuccessful()) {
