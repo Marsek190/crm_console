@@ -57,10 +57,10 @@ class CreateOrder extends Command
         try {
             $orderDto = $this->order->save($order);
 			
-			// апдейтим сумму в crm
-			if ($orderDto->getPersonalDiscount() > 0) {
-				$this->order->updateOrderDiscountInCrm($order);
-			}
+            // апдейтим сумму в crm
+            if ($orderDto->getPersonalDiscount() > 0) {
+            	$this->order->updateOrderDiscountInCrm($orderDto);
+            }
         } catch (OrderExistsError | WrongOrderStoreException $e) {
             $output->writeln($e->getMessage());
 
