@@ -77,11 +77,11 @@ class Order
      */
 	public function getOrderById(string $orderId): \RetailCrm\Response\ApiResponse
 	{
-		$response = $this->client->request->ordersGet($orderId, static::FIND_BY_ID_TYPE);
-        if (! $response->isSuccessful()) {
-            throw new OrderNotFoundException();
-        }
+	    $response = $this->client->request->ordersGet($orderId, static::FIND_BY_ID_TYPE);
+            if (! $response->isSuccessful()) {
+                throw new OrderNotFoundException();
+            }
 		
-		return $response;
+	    return $response;
 	}
 }
