@@ -7,6 +7,7 @@ namespace Core\Service;
 use Core\Exception\OrderExistsError;
 use Core\Exception\WrongOrderStoreException;
 use Core\Exception\WrongOrderUpdateException;
+use Core\Exception\OrderNotFoundException;
 use Core\Service\Discount\DiscountEvaluator;
 use RetailCrm\ApiClient;
 
@@ -51,26 +52,36 @@ class Order
         }
         $orderDto = (new \Core\Entity\DTO\Order())
             ->setId($order->getId())
-            ->setAmountPriceToDiscount($amountPriceToDiscountDto);
-
-        // апдейтим сумму в crm
-        if ($amountPriceToDiscountDto->getDiscountValue() > 0) {
-            $this->updateAmountPriceInOrder($order);
-        }
+            ->setPriceWithDiscount($amountPriceToDiscountDto->getPriceWithDiscount())
+            ->setPersonalDiscount($amountPriceToDiscountDto->getDiscountValue());
 
         return $orderDto;
     }
 
     /**
-     * @param \Core\Entity\Order $order
+     * @param \Core\Entity\DTO\Order $orderDto
      * @throws WrongOrderUpdateException
      */
-    protected function updateAmountPriceInOrder(\Core\Entity\Order $order): void
+    public function updateOrderDiscountInCrm(\Core\Entity\DTO\Order $orderDto): void
     {
-        $orderToArray = $order->toArray();
-        $response = $this->client->request->ordersEdit($orderToArray, static::FIND_BY_ID_TYPE);
+        $orderDtoToArray = $orderDto->toArray();
+        $response = $this->client->request->ordersEdit($orderDtoToArray, static::FIND_BY_ID_TYPE);
         if (! $response->isSuccessful()) {
             throw new WrongOrderUpdateException($response->getResponseBody());
         }
     }
+	
+	/**
+     * @param string $orderId
+     * @throws OrderNotFoundException
+     */
+	public function getOrderById(string $orderId): \RetailCrm\Response\ApiResponse 
+	{
+		$response = $this->client->request->ordersGet($orderId, static::FIND_BY_ID_TYPE);
+        if (! $response->isSuccessful()) {
+            throw new OrderNotFoundException();
+        }
+		
+		return $response;
+	}
 }

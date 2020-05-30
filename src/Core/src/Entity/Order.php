@@ -62,12 +62,6 @@ class Order extends AbstractRootEntity
      */
     protected ?string $email = null;
 
-    protected array $needFields = [
-        'id',
-        'totalPrice',
-        'personalDiscount'
-    ];
-
     /**
      * @return int
      */

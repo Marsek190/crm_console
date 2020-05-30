@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Core\Entity\DTO;
 
 
-class Order
+class Order extends AbstractDTOEntity
 {
     protected int $id;
-
-    protected AmountPriceToDiscount $amountPriceToDiscount;
+    
+    protected float $priceWithDiscount;
+    
+    protected float $personalDiscount = 0;
 
     /**
      * @return int
@@ -29,20 +31,38 @@ class Order
     }
 
     /**
-     * @return AmountPriceToDiscount
+     * @return float
      */
-    public function getAmountPriceToDiscount(): AmountPriceToDiscount
+    public function getPriceWithDiscount(): float
     {
-        return $this->amountPriceToDiscount;
+        return $this->priceWithDiscount;
     }
 
     /**
-     * @param AmountPriceToDiscount $amountPriceToDiscount
+     * @param float $priceWithDiscount
      * @return Order
      */
-    public function setAmountPriceToDiscount(AmountPriceToDiscount $amountPriceToDiscount): Order
+    public function setPriceWithDiscount(float $priceWithDiscount): Order
     {
-        $this->amountPriceToDiscount = $amountPriceToDiscount;
+        $this->priceWithDiscount = $priceWithDiscount;
+        return $this;
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getPersonalDiscount()
+    {
+        return $this->personalDiscount;
+    }
+
+    /**
+     * @param float|int $personalDiscount
+     * @return Order
+     */
+    public function setPersonalDiscount($personalDiscount)
+    {
+        $this->personalDiscount = $personalDiscount;
         return $this;
     }
 }

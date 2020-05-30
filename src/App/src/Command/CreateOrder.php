@@ -44,7 +44,7 @@ class CreateOrder extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $orderNumber = $input->getArgument(static::ORDER_NUMBER_ARGUMENT);
-        $response = $this->client->request->ordersGet('74', 'id');
+        $response = $this->client->request->ordersGet($orderNumber, 'id');
         if (! $response->isSuccessful()) {
             $output->write($response->asJsonResponse()->getResponseBody());
 
@@ -56,6 +56,11 @@ class CreateOrder extends Command
 
         try {
             $orderDto = $this->order->save($order);
+			
+			// апдейтим сумму в crm
+			if ($orderDto->getPersonalDiscount() > 0) {
+				$this->order->updateOrderDiscountInCrm($order);
+			}
         } catch (OrderExistsError | WrongOrderStoreException $e) {
             $output->writeln($e->getMessage());
 
